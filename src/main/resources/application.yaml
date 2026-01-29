@@ -1,0 +1,127 @@
+server:
+  port: 8080
+  url: http://localhost:8080
+
+app:
+#  resourceLocations:
+#    images: E:\User\SobstvennoYz\Pictures\download   -поменял на
+  storage:
+    images: "E:/User/SobstvennoYz/Pictures/download"
+
+spring:
+  application:
+    name: gallery
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/gallery_db
+    username: postgres
+    password: 12344321
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 30000
+#      три строчки ниже попробовать убрать
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      pool-name: GalleryHikariPool
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          batch_size: 20
+          fetch_size: 50
+          lob:
+            non_contextual_creation: true
+#        use_sql_comments: true
+        order_inserts: true
+        order_updates: true
+        query:
+          fail_on_pagination_over_collection_fetch: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        # Отключаем вторую кэширование, если не используете
+        cache:
+          use_second_level_cache: false
+          use_query_cache: false
+        # Для корректной работы с UUID
+        id:
+          new_generator_mappings: true
+        # Оптимизация производительности
+        connection:
+          autocommit: false
+
+  web:
+    resources:
+      static-locations: "classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/"
+    cors:
+      allowed-origins: "http://localhost:3000"
+      allowed-methods: "GET,POST,PUT,DELETE,OPTIONS"
+      allowed-headers: "*"
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+  mvc:
+    cors:
+      allowed-origins: "http://localhost:3000"
+      allowed-methods: "GET,POST,PUT,DELETE,OPTIONS"
+      allowed-headers: "*"
+      allow-credentials: true
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html #может быть потребуется убрать
+    operationsSorter: method
+    tagsSorter: alpha
+    display-request-duration: true
+    filter: true
+
+
+file:
+  upload-dir: "E:/User/SobstvennoYz/Pictures/download"
+
+logging:
+  level:
+    ru.top_academy.gallery: DEBUG
+    org.springframework: INFO
+    org.springframework.web: INFO
+    org.springframework.transaction: TRACE
+    org.springframework.orm.jpa: TRACE
+    org.hibernate: TRACE
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type: TRACE
+    org.hibernate.stat: DEBUG
+    org.springframework.transaction.interceptor: TRACE
+    org.springframework.transaction.support: TRACE
+    org.springframework.orm.jpa.JpaTransactionManager: TRACE
+    org.hibernate.engine.transaction.internal.TransactionImpl: TRACE
+    org.hibernate.resource.transaction.backend.jdbc.internal.JdbcResourceLocalTransactionCoordinatorImpl: TRACE
+    org.springframework.jdbc.datasource.DataSourceTransactionManager: TRACE
+    org.springframework.jdbc.datasource.DataSourceUtils: TRACE
+    org.springframework.jdbc.core.JdbcTemplate: DEBUG
+    org.springframework.jdbc.core.StatementCreatorUtils: TRACE
+      # Для отладки транзакций
+    org.springframework.jdbc.support.JdbcTransactionManager: TRACE
+    com.zaxxer.hikari.HikariConfig: DEBUG
+    com.zaxxer.hikari: TRACE
+    root: info
+  file:
+    name: logs/gallery.log
+    path: ./logs
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
+      max-history: 30
+      file-name-pattern: logs/gallery-%d{yyyy-MM-dd}.%i.log
+  pattern:
+    file: "%d{yyyy-MM-dd HH:mm:ss} - %5p [%15.15t] %-40.40logger{39} : %m%n"
+    console: "%d{HH:mm:ss} %-5p [%t] %-40logger{40} : %m%n"
