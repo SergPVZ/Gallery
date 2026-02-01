@@ -1,8 +1,6 @@
-package ru.top_academy.gallery.mapper;
+package ru.top_academy.gallery.photographer;
 
 import org.springframework.stereotype.Component;
-import ru.top_academy.gallery.entity.Photographer;
-import ru.top_academy.gallery.dto.PhotographerResponseDTO;
 
 @Component
 public class PhotographerMapper {

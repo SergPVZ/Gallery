@@ -1,4 +1,4 @@
-package ru.top_academy.gallery.dto;
+package ru.top_academy.gallery.photographer;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

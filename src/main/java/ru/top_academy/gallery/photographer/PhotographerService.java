@@ -1,15 +1,10 @@
-package ru.top_academy.gallery.service;
+package ru.top_academy.gallery.photographer;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
-import ru.top_academy.gallery.dto.PhotographerResponseDTO;
-import ru.top_academy.gallery.entity.Photographer;
-import ru.top_academy.gallery.mapper.PhotographerMapper;
-import ru.top_academy.gallery.repository.PhotographerRepository;
-import ru.top_academy.gallery.request.PhotographerRequest;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -82,11 +77,13 @@ public class PhotographerService {
 
     public List<PhotographerResponseDTO> getPhotographerByName(String firstName, String lastName) {
 
-        List<Photographer> getFirstAndLastName = repository.findByFirstNameAndLastName(firstName, lastName);
+        List<Photographer> photographers = repository.findByFirstNameAndLastName(firstName, lastName);
 
-        return getFirstAndLastName.stream()
+        return photographers.stream()
                 .map(mapper::mapToPhotographerResponseDTO)
                 .collect(Collectors.toList());
+        // добавить, что фотографа не найдено
 
     }
+
 }

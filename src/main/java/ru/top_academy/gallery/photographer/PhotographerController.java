@@ -1,12 +1,9 @@
-package ru.top_academy.gallery.controller;
+package ru.top_academy.gallery.photographer;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.top_academy.gallery.dto.PhotographerResponseDTO;
-import ru.top_academy.gallery.request.PhotographerRequest;
-import ru.top_academy.gallery.service.PhotographerService;
 
 import java.util.UUID;
 import java.util.List;

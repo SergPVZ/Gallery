@@ -1,4 +1,4 @@
-package ru.top_academy.gallery.request;
+package ru.top_academy.gallery.photographer;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
