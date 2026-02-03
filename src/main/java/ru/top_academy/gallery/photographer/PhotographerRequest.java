@@ -14,9 +14,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PhotographerRequest {
 
-//    @Schema(description = "Идентификатор фотографа")
-//    private UUID id;
-
     @Schema(description = "Имя фотографа")
     @JsonProperty("firstName")
     @NotBlank
@@ -43,19 +40,9 @@ public class PhotographerRequest {
     @NotBlank
     private String city;
 
-//    @Schema(description = "Дата регистрации на сайте")
-//    @JsonProperty("registrationDate")
-//    @NotNull
-//    private LocalDateTime registrationDate;
-
     @Schema(description = "Наличие активности фотографа",
             defaultValue = "true")
     @JsonProperty("isActive")
     private boolean isActive = true;
-
-//    @Schema(description = "Дата последнего обновления данных")
-//    @JsonProperty("updateAt")
-//    @LastModifiedDate
-//    private LocalDateTime updatedAt;
 
 }
