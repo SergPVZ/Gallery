@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS photographers;
+DROP TABLE IF EXISTS photographer;
 CREATE TABLE IF NOT EXISTS photographers(
     id UUID                  PRIMARY KEY DEFAULT gen_random_uuid(), -- ID фотографа (первичный ключ)
     first_name               VARCHAR(50)         NOT NULL,          -- Имя фотографа (обязательное поле)
@@ -9,4 +9,4 @@ CREATE TABLE IF NOT EXISTS photographers(
     registration_date        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,   -- Дата регистрации
     is_active                BOOLEAN   DEFAULT true,                -- Активность фотографа на сайте
     updated_at               TIMESTAMP DEFAULT CURRENT_TIMESTAMP    -- Дата обновления информации
-);
+)

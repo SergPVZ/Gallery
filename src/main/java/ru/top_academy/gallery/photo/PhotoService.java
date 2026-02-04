@@ -5,8 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
+import ru.top_academy.gallery.photographer.Photographer;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -38,6 +41,27 @@ public class PhotoService {
         Photo photo = repository.findById(id).orElse(null);
 
         return mapper.mapToPhotoResponceDTO(photo);
+
+    }
+
+    public List<PhotoResponceDTO> getPhotosByName(String name) {
+
+        List<Photo> photo = repository.findByName(name);
+
+        return photo.stream()
+                .map(mapper::mapToPhotoResponceDTO)
+                .collect(Collectors.toList());
+
+    }
+
+
+    public List<PhotoResponceDTO> getPhotosByGenre(String genre) {
+
+        List<Photo> photo = repository.findByGenre(genre);
+
+        return photo.stream()
+                .map(mapper::mapToPhotoResponceDTO)
+                .collect(Collectors.toList());
 
     }
 

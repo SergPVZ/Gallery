@@ -13,17 +13,17 @@ spring:
     name: gallery
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/gallery_db
-    username: postgres
-    password: 12344321
+    url: jdbc:postgresql://localhost:5432/postgres  #gallery_db
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD:password}
     hikari:
       maximum-pool-size: 10
       minimum-idle: 5
       connection-timeout: 30000
 #      три строчки ниже попробовать убрать
-      idle-timeout: 600000
-      max-lifetime: 1800000
-      pool-name: GalleryHikariPool
+#      idle-timeout: 600000
+#      max-lifetime: 1800000
+#      pool-name: GalleryHikariPool
 
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
