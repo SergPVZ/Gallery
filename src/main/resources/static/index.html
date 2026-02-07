@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Галерея изображений</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/gallery.css">
+
+    <!-- Font Awesome для иконок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<!-- Верхнее меню -->
+<nav class="menu">
+    <a href="/" class="menu-link">
+        <i class="fas fa-home"></i> Главная
+    </a>
+    <a href="/upload.html" class="menu-link">
+        <i class="fas fa-upload"></i> Загрузить
+    </a>
+
+    <div class="menu-right">
+        <a href="/login.html" class="menu-link">
+            <i class="fas fa-sign-in-alt"></i> Войти
+        </a>
+        <a href="/register.html" class="menu-link">
+            <i class="fas fa-user-plus"></i> Регистрация
+        </a>
+    </div>
+</nav>
+
+<!-- Основной контент -->
+<main class="layout-with-sidebar">
+    <!-- Боковая панель -->
+    <aside class="sidebar">
+        <div class="sidebar-section">
+            <h3 class="sidebar-title">
+                <i class="fas fa-search"></i> Поиск
+            </h3>
+            <div class="search-container">
+                <input type="text"
+                       class="search-input"
+                       placeholder="Введите теги...">
+            </div>
+        </div>
+
+        <div class="sidebar-section">
+            <h3 class="sidebar-title">
+                <i class="fas fa-tags"></i> Популярные теги
+            </h3>
+            <div id="tags-container">
+                <!-- Теги будут загружены через JS -->
+            </div>
+        </div>
+    </aside>
+
+    <!-- Основной контент -->
+    <div class="main-content">
+        <div class="gallery-grid" id="gallery">
+            <!-- Изображения будут загружены через JS -->
+        </div>
+
+        <!-- Пагинация -->
+        <div class="pagination">
+            <a href="#" class="pagination-link disabled">
+                <i class="fas fa-chevron-left"></i> Назад
+            </a>
+            <span class="pagination-link current">1</span>
+            <a href="#" class="pagination-link">2</a>
+            <a href="#" class="pagination-link">3</a>
+            <a href="#" class="pagination-link">
+                Вперед <i class="fas fa-chevron-right"></i>
+            </a>
+        </div>
+    </div>
+</main>
+
+<!-- JS -->
+<script src="../../../../resources/static/js/autocomplete.js"></script>
+<script src="../../../../resources/static/js/tags-handler.js"></script>
+<script>
+    // Передача данных тегов из сервера
+    window.tagsData = [
+        {id: 1, name: 'природа', count: 45},
+        {id: 2, name: 'город', count: 32},
+        {id: 3, name: 'животные', count: 28},
+        // ... остальные теги
+    ];
+</script>
+</body>
+</html>

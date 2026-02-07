@@ -12,10 +12,21 @@ spring:
   application:
     name: gallery
 
+  profiles:
+    active: dev
+
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    encoding: UTF-8
+    cache: false
+
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres  #gallery_db
     username: ${POSTGRES_USER:postgres}
-    password: ${POSTGRES_PASSWORD:password}
+    password: ${POSTGRES_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver #
     hikari:
       maximum-pool-size: 10
       minimum-idle: 5
@@ -57,7 +68,7 @@ spring:
 
   web:
     resources:
-      static-locations: "classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/"
+      static-locations: "classpath:/static/"
     cors:
       allowed-origins: "http://localhost:3000"
       allowed-methods: "GET,POST,PUT,DELETE,OPTIONS"
@@ -124,4 +135,9 @@ logging:
       file-name-pattern: logs/gallery-%d{yyyy-MM-dd}.%i.log
   pattern:
     file: "%d{yyyy-MM-dd HH:mm:ss} - %5p [%15.15t] %-40.40logger{39} : %m%n"
-    console: "%d{HH:mm:ss} %-5p [%t] %-40logger{40} : %m%n"
+    console: "%clr(%d{HH:mm:ss.SSS}){faint} %clr(%-5level) %clr(---){faint} %clr([%15.15thread]){cyan} %clr(%-40.40logger{40}){blue} %clr(:){faint} %m%n"
+
+jwt:
+  secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+  expiration: 86400000 # 24 часа в миллисекундах
+  refresh-expiration: 604800000 # 7 дней в миллисекундах

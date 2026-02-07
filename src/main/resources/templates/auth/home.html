@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: head('Мой аккаунт')">
+</head>
+
+<body>
+<!-- Вставляем фрагмент меню -->
+<div th:replace="fragments/header :: body">
+</div>
+
+<!-- Контент страницы -->
+<div class="page-content">
+    <div class="form-container">
+        <div class="auth-container">
+            <h2 class="form-title">
+                <i class="fas fa-user-circle"></i> Мой аккаунт
+            </h2>
+
+            <div class="user-info" th:if="${user}">
+                <div class="info-item">
+                    <i class="fas fa-user"></i>
+                    <strong>Имя пользователя:</strong>
+                    <span th:text="${user.username}"></span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-envelope"></i>
+                    <strong>Email:</strong>
+                    <span th:text="${user.email}"></span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-calendar"></i>
+                    <strong>Дата регистрации:</strong>
+                    <span th:text="${#dates.format(user.createdAt, 'dd.MM.yyyy')}"></span>
+                </div>
+            </div>
+
+            <div class="auth-actions">
+                <a th:href="@{/auth/change-password}" class="btn btn-change-password">
+                    <i class="fas fa-key"></i> Изменить пароль
+                </a>
+                <a th:href="@{/images}" class="btn btn-secondary">
+                    <i class="fas fa-images"></i> Мои изображения
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

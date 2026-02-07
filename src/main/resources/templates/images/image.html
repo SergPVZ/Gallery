@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: head('Изображение')">
+</head>
+
+<body>
+<div th:replace="fragments/header :: body">
+</div>
+
+<div class="layout-with-sidebar">
+    <!-- Боковая панель -->
+    <aside class="sidebar">
+        <div class="sidebar-section">
+            <h3 class="sidebar-title">
+                <i class="fas fa-search"></i> Поиск
+            </h3>
+            <form th:action="@{/images}" method="get" class="search-form">
+                <input type="text"
+                       name="search"
+                       class="search-input"
+                       placeholder="Введите теги для поиска..."
+                       th:value="${searchQuery}">
+                <button type="submit" class="btn btn-primary" style="margin-top: 10px;">
+                    <i class="fas fa-search"></i> Поиск
+                </button>
+            </form>
+        </div>
+
+        <div class="sidebar-section" th:if="${not #lists.isEmpty(tags)}">
+            <h3 class="sidebar-title">
+                <i class="fas fa-tags"></i> Популярные теги
+            </h3>
+            <div class="tags-container">
+                <th:block th:each="tag : ${tags}">
+                    <div class="tag">
+                        <a href="#"
+                           th:text="${tag.name}"
+                           th:attr="data-tag=${tag.name}"
+                           class="tag-name">
+                        </a>
+                        <span class="tag-count" th:text="'(' + ${tag.imageCount} + ')'"></span>
+                    </div>
+                </th:block>
+            </div>
+        </div>
+
+        <!-- Информация об изображении -->
+        <div class="sidebar-section" th:if="${image}">
+            <h3 class="sidebar-title">
+                <i class="fas fa-info-circle"></i> Информация
+            </h3>
+            <div class="image-info">
+                <div class="info-item">
+                    <strong>Название:</strong>
+                    <span th:text="${image.originalName}"></span>
+                </div>
+                <div class="info-item">
+                    <strong>Загружено:</strong>
+                    <span th:text="${#dates.format(image.createdAt, 'dd.MM.yyyy HH:mm')}"></span>
+                </div>
+                <div class="info-item">
+                    <strong>Размер:</strong>
+                    <span th:text="${image.size} + ' KB'"></span>
+                </div>
+                <div class="info-item" th:if="${not #lists.isEmpty(image.tags)}">
+                    <strong>Теги:</strong>
+                    <div class="image-tags">
+                        <th:block th:each="tag : ${image.tags}">
+                            <span class="tag" th:text="${tag}"></span>
+                        </th:block>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Действия с изображением -->
+            <div class="image-actions" th:if="${isOwner}">
+                <h3 class="sidebar-title">
+                    <i class="fas fa-cog"></i> Действия
+                </h3>
+                <div class="actions-buttons">
+                    <a th:href="@{'/images/' + ${image.id} + '/edit'}" class="btn btn-secondary">
+                        <i class="fas fa-edit"></i> Редактировать
+                    </a>
+                    <form th:action="@{'/images/' + ${image.id} + '/delete'}" method="post"
+                          onsubmit="return confirm('Удалить изображение?')">
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-trash"></i> Удалить
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Основной контент -->
+    <main class="main-content">
+        <div class="image-viewer">
+            <div class="image-container">
+                <img th:src="${image.imageUrl}"
+                     alt="Изображение"
+                     class="full-image"
+                     onerror="this.onerror=null; this.src='/images/not-found.jpg';">
+            </div>
+
+            <!-- Навигация -->
+            <div class="image-navigation" th:if="${prevImageId or nextImageId}">
+                <div class="nav-buttons">
+                    <a th:if="${prevImageId}"
+                       th:href="@{'/images/' + ${prevImageId}}"
+                       class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Предыдущее
+                    </a>
+
+                    <a th:href="@{/images}" class="btn btn-secondary">
+                        <i class="fas fa-th-large"></i> К галерее
+                    </a>
+
+                    <a th:if="${nextImageId}"
+                       th:href="@{'/images/' + ${nextImageId}}"
+                       class="btn btn-secondary">
+                        Следующее <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- JavaScript -->
+<script th:src="@{/js/tags-handler.js}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Инициализация обработчика тегов
+        if (typeof window.tagsHandler !== 'undefined') {
+            window.tagsHandler.init();
+        }
+
+        // Обработка кликов по тегам для поиска
+        document.querySelectorAll('.tag-name').forEach(function(tagLink) {
+            tagLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                const tag = this.getAttribute('data-tag');
+                const searchInput = document.querySelector('.search-input');
+
+                if (searchInput) {
+                    const currentValue = searchInput.value.trim();
+                    searchInput.value = currentValue ? currentValue + ' ' + tag : tag;
+
+                    // Автоматически отправляем форму поиска
+                    const form = searchInput.closest('form');
+                    if (form) {
+                        form.submit();
+                    }
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

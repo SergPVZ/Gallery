@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title} + ' - Image Gallery'">Image Gallery</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" th:href="@{/css/base.css}">
+    <link rel="stylesheet" th:href="@{/css/layout.css}">
+    <link rel="stylesheet" th:href="@{/css/components.css}">
+    <link rel="stylesheet" th:href="@{/css/gallery.css}">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body th:fragment="body">
+<!-- Верхнее меню -->
+<nav class="menu">
+    <div class="menu-left">
+        <a th:href="@{/}" class="menu-link">
+            <i class="fas fa-home"></i> Главная
+        </a>
+        <a th:href="@{/images}" class="menu-link">
+            <i class="fas fa-images"></i> Галерея
+        </a>
+        <a th:href="@{/upload}" class="menu-link">
+            <i class="fas fa-upload"></i> Загрузить
+        </a>
+    </div>
+
+    <div class="menu-right">
+        <th:block th:if="${not #authorization.expression('isAuthenticated()')}">
+            <a th:href="@{/auth/login}" class="menu-link">
+                <i class="fas fa-sign-in-alt"></i> Вход
+            </a>
+            <a th:href="@{/auth/register}" class="menu-link">
+                <i class="fas fa-user-plus"></i> Регистрация
+            </a>
+        </th:block>
+
+        <th:block th:if="${#authorization.expression('isAuthenticated()')}">
+            <a th:href="@{/auth/home}" class="menu-link">
+                <i class="fas fa-user"></i> Мой аккаунт
+            </a>
+            <form th:action="@{/auth/logout}" method="post" style="display:inline;">
+                <button type="submit" class="btn btn-logout">
+                    <i class="fas fa-sign-out-alt"></i> Выход
+                </button>
+            </form>
+        </th:block>
+    </div>
+</nav>
+
+<!-- Основной контент -->
+<div class="main-container">
+    <div th:replace="${content}"></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,66 @@
+:root {
+    --color-bg: #121212;
+    --color-bg-secondary: #1c1c1c;
+    --color-bg-tertiary: #242424;
+    --color-bg-input: #3a3a3a;
+    --color-text: #eee;
+    --color-text-secondary: #aaa;
+    --color-primary: #4f8fff;
+    --color-primary-hover: #3a6fdc;
+    --color-border: #444;
+    --color-error: #ff4444;
+    --color-success: #44aa44;
+    --border-radius: 4px;
+    --transition-speed: 0.2s;
+    --shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    font-family: Arial, sans-serif;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--color-primary);
+}
+
+input, button, textarea, select {
+    font-family: inherit;
+    font-size: inherit;
+}
+
+/* Утилиты */
+.hidden {
+    display: none !important;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-error {
+    color: var(--color-error);
+}
+
+.text-success {
+    color: var(--color-success);
+}
+
+.mt-10 { margin-top: 10px; }
+.mt-20 { margin-top: 20px; }
+.mb-10 { margin-bottom: 10px; }
+.mb-20 { margin-bottom: 20px; }

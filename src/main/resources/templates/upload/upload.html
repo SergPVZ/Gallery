@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: head('Upload')">
+</head>
+
+<body>
+<div class="main-container">
+    <div th:replace="fragments/menu :: menu"></div>
+
+    <div class="page-content">
+        <div class="upload-container">
+            <div class="upload-header">
+                <h2><i class="fas fa-cloud-upload-alt"></i> Upload Image</h2>
+                <p>Supported formats: JPG, PNG, GIF (Max 10MB)</p>
+            </div>
+
+            <form th:action="@{/upload}" method="post" enctype="multipart/form-data" class="upload-form">
+                <!-- Превью изображения -->
+                <div class="upload-preview" id="image-preview">
+                    <div class="preview-placeholder">
+                        <i class="fas fa-image"></i>
+                        <p>No image selected</p>
+                    </div>
+                </div>
+
+                <!-- Выбор файла -->
+                <div class="form-group">
+                    <label for="file" class="upload-label">
+                        <i class="fas fa-file-image"></i> Choose file
+                    </label>
+                    <div class="file-input-wrapper">
+                        <input type="file"
+                               accept=".jpeg,.jpg,.png,.gif,.webp"
+                               id="file"
+                               name="file"
+                               class="upload-input"
+                               required />
+                        <label for="file" class="file-input-label">
+                            <i class="fas fa-folder-open"></i> Browse files
+                        </label>
+                        <span class="file-name" id="file-name">No file chosen</span>
+                    </div>
+                    <div class="input-hint">Maximum file size: 10MB</div>
+                </div>
+
+                <!-- Теги -->
+                <div class="form-group">
+                    <label for="tag-input" class="upload-label">
+                        <i class="fas fa-tags"></i> Tags
+                    </label>
+                    <input id="tag-input"
+                           type="text"
+                           placeholder="Start typing to search or add tags"
+                           autocomplete="off"
+                           class="tag-input" />
+                    <div class="input-hint">
+                        Add relevant tags separated by comma or press Enter
+                    </div>
+
+                    <!-- Выбранные теги -->
+                    <div class="selected-tags-container">
+                        <div id="selected-tags" class="selected-tags"></div>
+                    </div>
+
+                    <input type="hidden" id="selected-tag-ids" name="tagIds" />
+
+                    <!-- Популярные теги -->
+                    <div class="popular-tags" th:if="${not #lists.isEmpty(popularTags)}">
+                        <div class="popular-tags-title">Popular tags:</div>
+                        <div class="popular-tags-list">
+                                <span th:each="tag : ${popularTags}"
+                                      class="popular-tag"
+                                      th:text="${tag.name}"
+                                      th:attr="data-tag-id=${tag.id}">
+                                </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Опционально: описание -->
+                <div class="form-group">
+                    <label for="description" class="upload-label">
+                        <i class="fas fa-align-left"></i> Description (optional)
+                    </label>
+                    <textarea id="description"
+                              name="description"
+                              class="description-input"
+                              placeholder="Add a description for your image..."
+                              rows="3"></textarea>
+                </div>
+
+                <!-- Ошибки -->
+                <div class="error-message" th:if="${error}" th:text="${error}"></div>
+                <div class="success-message" th:if="${success}" th:text="${success}"></div>
+
+                <!-- Кнопки -->
+                <div class="form-actions">
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-upload"></i> Upload Image
+                    </button>
+                    <a th:href="@{/images}" class="cancel-btn">
+                        <i class="fas fa-times"></i> Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Подключаем библиотеки -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css"/>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+
+<!-- Font Awesome -->
+<script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    // Получаем теги из модели
+    var tagsFromModel = /*[[${tagsJson}]]*/ [];
+
+    // Инициализация при загрузке страницы
+    document.addEventListener('DOMContentLoaded', function() {
+        initFilePreview();
+        initTagAutocomplete(tagsFromModel);
+        initPopularTags();
+    });
+
+    // Предпросмотр файла
+    function initFilePreview() {
+        const fileInput = document.getElementById('file');
+        const fileName = document.getElementById('file-name');
+        const preview = document.getElementById('image-preview');
+
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                fileName.textContent = file.name;
+
+                // Показываем превью
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        preview.innerHTML = `
+                                <div class="preview-image">
+                                    <img src="${e.target.result}" alt="Preview">
+                                    <button type="button" class="remove-preview">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            `;
+
+                        // Добавляем обработчик для удаления превью
+                        preview.querySelector('.remove-preview').addEventListener('click', function() {
+                            fileInput.value = '';
+                            fileName.textContent = 'No file chosen';
+                            preview.innerHTML = `
+                                    <div class="preview-placeholder">
+                                        <i class="fas fa-image"></i>
+                                        <p>No image selected</p>
+                                    </div>
+                                `;
+                        });
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+        });
+    }
+
+    // Автодополнение тегов
+    function initTagAutocomplete(tags) {
+        $('#tag-input').autocomplete({
+            source: function(request, response) {
+                const term = request.term.toLowerCase();
+                const filtered = tags.filter(tag =>
+                    tag.name.toLowerCase().includes(term)
+                );
+                response(filtered.map(tag => ({
+                    label: tag.name,
+                    value: tag.id
+                })));
+            },
+            select: function(event, ui) {
+                addTag(ui.item.label, ui.item.value);
+                $(this).val('');
+                return false;
+            }
+        });
+
+        // Добавление тега по Enter
+        $('#tag-input').on('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const value = $(this).val().trim();
+                if (value) {
+                    // Проверяем, есть ли тег в списке
+                    const existingTag = tags.find(t => t.name.toLowerCase() === value.toLowerCase());
+                    if (existingTag) {
+                        addTag(existingTag.name, existingTag.id);
+                    } else {
+                        addTag(value, null); // Новый тег
+                    }
+                    $(this).val('');
+                }
+            }
+        });
+    }
+
+    // Популярные теги
+    function initPopularTags() {
+        document.querySelectorAll('.popular-tag').forEach(function(tagElement) {
+            tagElement.addEventListener('click', function() {
+                const tagName = this.textContent;
+                const tagId = this.getAttribute('data-tag-id');
+                addTag(tagName, tagId);
+            });
+        });
+    }
+
+    // Добавление тега
+    function addTag(name, id) {
+        const selectedTags = document.getElementById('selected-tags');
+        const hiddenInput = document.getElementById('selected-tag-ids');
+
+        // Проверяем, не добавлен ли уже тег
+        const existingTags = Array.from(selectedTags.querySelectorAll('.selected-tag'))
+            .map(tag => tag.getAttribute('data-tag-name'));
+
+        if (!existingTags.includes(name)) {
+            // Создаем элемент тега
+            const tagElement = document.createElement('span');
+            tagElement.className = 'selected-tag';
+            tagElement.setAttribute('data-tag-name', name);
+            if (id) {
+                tagElement.setAttribute('data-tag-id', id);
+            }
+
+            tagElement.innerHTML = `
+                    ${name}
+                    <span class="remove-tag" onclick="removeTag(this)">
+                        <i class="fas fa-times"></i>
+                    </span>
+                `;
+
+            selectedTags.appendChild(tagElement);
+
+            // Обновляем скрытое поле
+            updateHiddenInput();
+        }
+    }
+
+    // Удаление тега
+    function removeTag(element) {
+        const tagElement = element.closest('.selected-tag');
+        tagElement.remove();
+        updateHiddenInput();
+    }
+
+    // Обновление скрытого поля с ID тегов
+    function updateHiddenInput() {
+        const hiddenInput = document.getElementById('selected-tag-ids');
+        const tagElements = document.querySelectorAll('.selected-tag[data-tag-id]');
+        const tagIds = Array.from(tagElements)
+            .map(tag => tag.getAttribute('data-tag-id'))
+            .filter(id => id);
+
+        hiddenInput.value = tagIds.join(',');
+    }
+    /*]]>*/
+</script>
+</body>
+</html>

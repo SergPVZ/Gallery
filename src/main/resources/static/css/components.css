@@ -1,0 +1,159 @@
+/* Кнопки */
+.btn {
+    background-color: var(--color-primary);
+    color: #fff;
+    font-weight: bold;
+    padding: 10px;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color var(--transition-speed) ease-in-out;
+    text-align: center;
+    display: inline-block;
+}
+
+.btn:hover {
+    background-color: var(--color-primary-hover);
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-logout {
+    background-color: transparent;
+    border: 1px solid var(--color-primary);
+}
+
+.btn-logout:hover {
+    background-color: rgba(79, 143, 255, 0.1);
+}
+
+/* Формы */
+.form-container {
+    background-color: var(--color-bg-tertiary);
+    padding: 30px;
+    border-radius: 8px;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: var(--shadow);
+    margin: 20px auto;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-label {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.form-input {
+    padding: 10px;
+    border: 2px solid transparent;
+    border-radius: var(--border-radius);
+    background-color: var(--color-bg-input);
+    color: var(--color-text);
+    outline: none;
+    font-size: 14px;
+    transition: border-color var(--transition-speed) ease-in-out;
+}
+
+.form-input:hover,
+.form-input:focus {
+    border-color: var(--color-primary);
+}
+
+.form-input:focus {
+    background-color: #424242;
+}
+
+/* Теги */
+.tag {
+    display: inline-block;
+    padding: 2px 8px;
+    margin: 2px;
+    border-radius: var(--border-radius);
+    background-color: rgba(255, 255, 255, 0.1);
+    font-size: 14px;
+    cursor: default;
+}
+
+.tag-name {
+    color: var(--color-text);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.tag-name:hover {
+    color: var(--color-primary);
+}
+
+.tag-remove {
+    margin-left: 4px;
+    cursor: pointer;
+    color: var(--color-text-secondary);
+}
+
+.tag-remove:hover {
+    color: var(--color-error);
+}
+
+/* Сообщения */
+.error-message {
+    color: var(--color-error);
+    font-size: 14px;
+    margin-top: 10px;
+    padding: 8px;
+    background-color: rgba(255, 68, 68, 0.1);
+    border-radius: var(--border-radius);
+}
+
+.success-message {
+    color: #4CAF50;
+    font-size: 14px;
+    margin-top: 10px;
+    padding: 8px;
+    background-color: rgba(76, 175, 80, 0.1);
+    border-radius: var(--border-radius);
+}
+
+/* Пагинация */
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+}
+
+.pagination-link {
+    padding: 6px 12px;
+    border-radius: var(--border-radius);
+    background-color: var(--color-bg-secondary);
+    cursor: pointer;
+    transition: background-color var(--transition-speed);
+}
+
+.pagination-link:hover:not(.disabled) {
+    background-color: var(--color-bg-tertiary);
+}
+
+.pagination-link.current {
+    background-color: var(--color-primary);
+}
+
+.pagination-link.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

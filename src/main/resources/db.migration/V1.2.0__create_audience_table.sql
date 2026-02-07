@@ -4,7 +4,9 @@ CREATE TABLE IF NOT EXISTS audiences(
     name                     VARCHAR(50)  UNIQUE NOT NULL,          -- Ник пользователя (уникальный, обязательное поле)
     email                    VARCHAR(100) UNIQUE NOT NULL,          -- Email пользователя (уникальный, обязательный)
     city                     VARCHAR(50),                           -- Часовой пояс пользователя
-    registration_date        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,   -- Дата регистрации
-    is_active                BOOLEAN   DEFAULT true,                -- Активность пользователя на сайте
-    updated_at               TIMESTAMP DEFAULT CURRENT_TIMESTAMP    -- Дата обновления информации
+    password VARCHAR(255)                        NOT NULL,
+    role VARCHAR(20) DEFAULT 'AUDIENCE'          NOT NULL,
+    registration_date        TIMESTAMP  DEFAULT CURRENT_TIMESTAMP,   -- Дата регистрации
+    is_active                BOOLEAN    DEFAULT true,                -- Активность пользователя на сайте
+    updated_at               TIMESTAMP  DEFAULT CURRENT_TIMESTAMP    -- Дата обновления информации
 );
