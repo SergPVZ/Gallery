@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/audience")
-@PreAuthorize("hasRole('AUDIENCE')")
+//@PreAuthorize("hasRole('AUDIENCE')")
 public class AudienceController {
 
     @Autowired

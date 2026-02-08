@@ -7,9 +7,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.top_academy.gallery.authentication.AuthenticationRequest;
-import ru.top_academy.gallery.authentication.AuthenticationResponse;
-import ru.top_academy.gallery.authentication.RegisterRequest;
 
 @RestController
 @RequestMapping("/api/auth")

@@ -11,7 +11,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.util.UUID;
 import java.time.LocalDateTime;
 
-@Entity(name = "photographer")
+@Entity(name = "photographers")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

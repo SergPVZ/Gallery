@@ -14,7 +14,7 @@ public interface PhotographerRepository extends JpaRepository<Photographer, UUID
 
     Optional<Photographer> findByEmail(String email);   //добавить внутрь скобок @NotBlank @Email, как на занятиях
 
-    @Query("SELECT p FROM photographer p WHERE p.firstName = :firstName AND p.lastName = :lastName")
+    @Query("SELECT p FROM photographers p WHERE p.firstName = :firstName AND p.lastName = :lastName")
     List<Photographer> findByFirstNameAndLastName(@Param("firstName") String firstName,
                                                   @Param("lastName") String lastName);
 
