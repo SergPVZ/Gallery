@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/photo")
-@PreAuthorize("hasAnyRole('PHOTOGRAPHER', 'AUDIENCE')")
+//@PreAuthorize("hasAnyRole('PHOTOGRAPHER', 'AUDIENCE')")
 public class PhotoController {
 
     @Autowired

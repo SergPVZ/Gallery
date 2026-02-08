@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/photographer")
-@PreAuthorize("hasRole('PHOTOGRAPHER')")
+//@PreAuthorize("hasRole('PHOTOGRAPHER')")
 public class PhotographerController {
 
     @Autowired
